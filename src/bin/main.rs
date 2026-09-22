@@ -9,10 +9,10 @@
 
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
+use esp32c3_wifi_scaffold::wifi::{NETWORKS, SETTINGS, Wifi};
 use esp_backtrace as _;
 use esp_hal::clock::CpuClock;
 use esp_hal::timer::timg::TimerGroup;
-use log::info;
 
 extern crate alloc;
 
@@ -39,20 +39,18 @@ async fn main(spawner: Spawner) -> ! {
     let timg0 = TimerGroup::new(peripherals.TIMG0);
     esp_rtos::start(timg0.timer0, peripherals.FROM_CPU_INTR0);
 
-    info!("Embassy initialized!");
+    let wifi = Wifi::connect(peripherals.WIFI, spawner, &SETTINGS, NETWORKS)
+        .await
+        .expect("wifi setup failed");
 
-    let _wifi_controller =
-        esp_radio::wifi::WifiController::new(peripherals.WIFI, Default::default())
-            .expect("Failed to initialize Wi-Fi controller");
-    let _wifi_interface = esp_radio::wifi::Interface::station();
-
-    // TODO: Spawn some tasks
-    let _ = spawner;
+    let stack = wifi.stack();
 
     loop {
-        info!("Hello world!");
-        Timer::after(Duration::from_secs(1)).await;
+        Timer::after(Duration::from_secs(10)).await;
+        log::info!(
+            "looping: config_up={} ip={:?}",
+            stack.is_config_up(),
+            stack.config_v4()
+        );
     }
-
-    // for inspiration have a look at the examples at https://github.com/esp-rs/esp-hal/tree/esp-hal-v1.2.2/examples
 }

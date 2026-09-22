@@ -1,0 +1,16 @@
+# You can add as many [[network]] blocks as you want, and it will try them all in order until it connects to one.
+# ip is optional, dhcp will be tried if no ip line is provided.
+
+[settings]
+mac = "aa:bb:cc:dd:ee:ff"
+retry_delay_secs = 60
+socket_count = 4
+
+[[network]]
+ssid = "example-network"
+pass = "example-password"
+
+[[network]]
+ssid = "example-static"
+pass = "example-password"
+ip = { ip = "192.168.1.50", gateway = "192.168.1.1", subnet = "255.255.255.0" }
