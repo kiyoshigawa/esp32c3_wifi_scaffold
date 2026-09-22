@@ -1,5 +1,6 @@
 [package]
 edition      = "2024"
+license      = "GPL-3.0-or-later for new work AND (MIT OR Apache-2.0) for original template"
 name         = "esp32c3_wifi_scaffold"
 rust-version = "1.95"
 version      = "0.1.0"
