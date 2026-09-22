@@ -9,6 +9,7 @@
 
 use embassy_executor::Spawner;
 use embassy_time::{Duration, Timer};
+use esp32c3_wifi_scaffold::http::Http;
 use esp32c3_wifi_scaffold::wifi::{NETWORKS, SETTINGS, Wifi};
 use esp_backtrace as _;
 use esp_hal::clock::CpuClock;
@@ -44,6 +45,8 @@ async fn main(spawner: Spawner) -> ! {
         .expect("wifi setup failed");
 
     let stack = wifi.stack();
+
+    Http::start(spawner, stack);
 
     loop {
         Timer::after(Duration::from_secs(10)).await;

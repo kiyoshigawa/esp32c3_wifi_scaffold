@@ -32,6 +32,11 @@ embassy-net = { version = "0.9.1", features = [
 ] }
 embedded-io = "0.7.1"
 embedded-io-async = "0.7.0"
+# async no_std HTTP server; see https://github.com/sammhicks/picoserve
+picoserve = { version = "~0.20.1", default-features = false, features = [
+  "embassy",
+  "log",
+] }
 esp-alloc = { version = "0.11.0", features = ["esp32c3"] }
 esp-backtrace = { version = "0.20.0", features = [
   "esp32c3",
